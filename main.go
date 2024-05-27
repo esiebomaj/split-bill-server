@@ -40,6 +40,8 @@ func main() {
 	router.Get("/health/", appBackend.HealthHandler)
 	router.Get("/groups/", appBackend.FetchGroupsHandler)
 	router.Post("/groups/", appBackend.CreateGroupHandler)
+	router.Get("/groups/{groupID}/items/", appBackend.FetchItemsByGroupHandler)
+	router.Post("/groups/{groupID}/items/", appBackend.CreateItemHandler)
 
 	port := appBackend.Envs.PORT
 	fmt.Println("Listening on port ", port)
