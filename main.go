@@ -28,7 +28,7 @@ func main() {
 	router := chi.NewRouter()
 	router.Use(cors.Handler(cors.Options{
 		AllowedOrigins:   []string{"*"},
-		AllowedMethods:   []string{"HEAD", "GET", "POST", "OPTIONS"},
+		AllowedMethods:   []string{"HEAD", "GET", "POST", "OPTIONS", "PATCH"},
 		AllowedHeaders:   []string{"*"},
 		ExposedHeaders:   []string{"Link"},
 		AllowCredentials: false,
@@ -38,10 +38,17 @@ func main() {
 	router.Use(middleware.Logger)
 
 	router.Get("/health/", appBackend.HealthHandler)
+
 	router.Get("/groups/", appBackend.FetchGroupsHandler)
 	router.Post("/groups/", appBackend.CreateGroupHandler)
-	router.Get("/groups/{groupID}/items/", appBackend.FetchItemsByGroupHandler)
-	router.Post("/groups/{groupID}/items/", appBackend.CreateItemHandler)
+
+	router.Get("/groups/{groupID}/items/", appBackend.AuthMiddleWare(appBackend.FetchItemsByGroupHandler))
+	router.Post("/groups/{groupID}/items/", appBackend.AuthMiddleWare(appBackend.CreateItemHandler))
+	router.Patch("/groups/{groupID}/items/{itemID}/", appBackend.AuthMiddleWare(appBackend.UpdateItemHandler))
+
+	router.Get("/groups/{groupID}/", appBackend.AuthMiddleWare(appBackend.GetGroupDetailsHandler))
+	router.Post("/groups/{groupID}/members/", appBackend.AuthMiddleWare(appBackend.AddUserToGroup))
+	router.Get("/groups/{groupID}/allusers/", appBackend.AuthMiddleWare(appBackend.GetAllUsers))
 
 	port := appBackend.Envs.PORT
 	fmt.Println("Listening on port ", port)

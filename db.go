@@ -21,7 +21,7 @@ func SetUpDB(Envs AppEnvs) *gorm.DB {
 	}
 
 	// Migrate the schema
-	db.AutoMigrate(&Group{}, &ListItem{})
+	db.AutoMigrate(&Group{}, &ListItem{}, &User{})
 
 	return db
 }
