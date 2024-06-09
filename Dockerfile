@@ -10,6 +10,6 @@ COPY . .
 
 RUN go build -o main .
 
-FROM alpine:latest  
-
 CMD ["/app/main"]
+
+
