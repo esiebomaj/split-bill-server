@@ -30,7 +30,7 @@ func main() {
 		AllowedOrigins:   []string{"*"},
 		AllowedMethods:   []string{"HEAD", "GET", "POST", "OPTIONS", "PATCH"},
 		AllowedHeaders:   []string{"*"},
-		ExposedHeaders:   []string{"*"},
+		ExposedHeaders:   []string{"Link"},
 		AllowCredentials: false,
 		MaxAge:           300,
 	}))
